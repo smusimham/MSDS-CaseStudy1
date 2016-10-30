@@ -1,13 +1,11 @@
 ########################################################################################
-#read the countryGDPdata file
+# Purpose: Read the GDP raw data for all countries file
+# Author: Ramesh Simhambhatla
+# Date Created: 10/28/2016
 ########################################################################################
 
-#setwd(file.path(getwd(),"/Analysis/Data"))
-
-cat("Start reading country GDP file from internet")
-
 countryGDPUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
-## download the file from the URL set 
+# download the file from the URL set 
 download.file(countryGDPUrl, destfile = "./countryGDPdata.csv")
 
 # read csv into a data frame
@@ -15,14 +13,16 @@ download.file(countryGDPUrl, destfile = "./countryGDPdata.csv")
 # current headers not appropriate, make it false
 countryGDPraw <- read.csv("countryGDPdata.csv", stringsAsFactors = FALSE, header = FALSE)
 
-## get dimension, variable names, and structure of the data
-## dimension of the dataframe shows observations and variables
+# get dimension, variable names, and structure of the data
+# dimension of the dataframe shows observations and variables
 dim(countryGDPraw)
 
-## examine general schema/structure of the table to determine useful variables and observations 
-## for merge and analysis
+# examine general schema/structure of the table to determine useful variables and observations 
+# for merge and analysis
 str(countryGDPraw)
 
-## explore data
-head(countryGDPraw, 10)
-cat("End of reading country GDP file from internet and reading to local session table")
+message("Observations while reading the GDP raw data file: 
+a. GDP data file contains GDP data for 190 countries with ranking. 
+b. The file do not have appropriate headers, so removed while reading into the data frame
+c. String data read as factors, so prevented while reading the file
+d. The file contains various other data, which may not be required for final analysis") 

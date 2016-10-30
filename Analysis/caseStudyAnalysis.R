@@ -1,50 +1,69 @@
-cat("\nStart of Case Study Analysis")
+#################################
+# Purpose: EVALUATE FOR CASE STUDY QUESTIONS:
+# Author: Ramesh Simhambhatla
+# Date Created: 10/28/2016
+#################################
 
-########################################################################################
-# EVALUATE FOR CASE STUDY QUESTIONS:
-########################################################################################
+############
 # QUESTION 1: Merge the data based on the country shortcode. How many of the IDs match? 
-# ANSWER: 190 matches per the str function
-########################################################################################
+# ANSWER: 189 matches per the str function
+message("Number of matches after merging with country shortcode: ", nrow(cleanGDPIncomeGroup))
+
+############
 # QUESTION 2: Sort the data frame in ascending order by GDP (so United States is last). 
 # What is the 13th country in the resulting data frame?
-# ANSWER 2: Spain
 
 # sort the data in ascending order of rank - no explicity "asc" required for arrange function
-cleanGDPIncomeGroup <- arrange(cleanGDPIncomeGroup, rank)
-head(cleanGDPIncomeGroup)
+cleanGDPIncomeGroup <- arrange(cleanGDPIncomeGroup, gdpinusd)
+str(cleanGDPIncomeGroup)
 
-# find the countryname for the rank=13
-cleanGDPIncomeGroup$countryname[which(cleanGDPIncomeGroup$rank == 13)]
-##################################################################################################
+# find the countryname for the 13th country in the data frame - KNA - St. Kitts and Nevis
+message("The 13th country in the resulting data frame: ", cleanGDPIncomeGroup[13,"countryname"])
+
+############
 # QUESTOIN 3: What are the average GDP rankings for the "High income: OECD" and 
 # "High income: nonOECD" groups? 
 OECDdata <- cleanGDPIncomeGroup[which(cleanGDPIncomeGroup$income.group == "High income: OECD"),]
-mean(OECDdata$rank) # 32,9667 (sum=989 of 30 observations) 
+message("The average GDP rankings for the (High income: OECD): ", mean(OECDdata$rank))
 
 nonOECDdata <- cleanGDPIncomeGroup[which(cleanGDPIncomeGroup$income.group == "High income: nonOECD"),]
-mean(nonOECDdata$rank) # 91.91304 (sum=2114 of 23 observations)
-##################################################################################################
-# QUESTION 4:Plot the GDP for all of the countries. Use ggplot2 to color your plot by 
+message("The average GDP rankings for the (High income: nonOECD): ", mean(nonOECDdata$rank))
+
+###########
+#QUESTION 4:Plot the GDP for all of the countries. Use ggplot2 to color your plot by 
 # Income Group.
-qplot(data=cleanGDPIncomeGroup, countrycode, log10(gdpinusd), color=income.group, 
-      main="Plot GDP for All Countries", xlab="Country Code", ylab="GDP in USD - log10") +
-  theme(axis.text.x = element_text(angle = 90, size=6))
-##################################################################################################
-# Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. 
+
+ggplot(cleanGDPIncomeGroup, aes(income.group, log10(gdpinusd), fill = income.group)) + 
+  geom_boxplot(outlier.shape = NA) +
+  theme(axis.text.x = element_text(angle = 45, size=8)) +
+  ggtitle("Box Plot for GDP for All Countries by Income Group") +
+  labs(x="Country Code", y="GDP in USD - log10")
+
+message("Observations from the boxplot of GDP data by income.group:
+a. All countries in the High income: OECD group countries have higher than all other groups. 
+   These are generally regarded as developed countries.
+b. Median GDP of the High Income: nonOECD, Lower Middle Income and Uppler Middle income groups are
+   very close, shows possible wide income gap in this group.
+c. Number of countries in the Lower middle income group are high, could be related to 
+   high population, small or poor countries")
+  
+###########
+# QUESTION 5 (a):
+#Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. 
 
 # Find quantiles and analyse
 quantileGDP <- quantile(cleanGDPIncomeGroup$gdpinusd)
 quantileGDP
-### Analysis: It's very interesting to find the diveregence GDP differences between the countries
-### top 25% percentile of the countries account for >98.5% of world GDP; bottom 25% account for < 0.05%
 
+message("With GDP quantiles, it's very interesting to find the diveregence GDP differences between the countries
+top 25% percentile of the countries account for >98.5% of world GDP; bottom 25% account for < 0.05% of GDP")
+
+#QUESTION 5 (b):
 # How many countries are Lower middle income but among the 38 nations with highest GDP?
 countrylmiLT39 <- cleanGDPIncomeGroup[which(cleanGDPIncomeGroup$income.group == "Lower middle income" & 
                                               cleanGDPIncomeGroup$rank <=38 ),]
-# list all countries that meet the criteria - lower middle income category & in top 38 GDP rank
-countrylmiLT39
 
 # Number of observations in the criteria: 5
-nrow(countrylmiLT39)
-cat("\nEnd of Case Study Analysis")
+message("Number of obversations with Lower middle income in top 38 GDP countries: ", nrow(countrylmiLT39))
+
+#############

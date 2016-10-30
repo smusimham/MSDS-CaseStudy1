@@ -1,0 +1,75 @@
+---
+title: "World Country GDP and Income Groups Evaluation"
+author: "Ramesh Simhambhatla"
+date: "October 29, 2016"
+output: 
+  html_document:
+    keep_md: true
+---
+```{r setup}
+library(knitr)
+opts_knit$set(root_dir = "/Users/rsimham/Documents/Ramesh/SMU/GitRepos/Case Studies/MSDS-CaseStudy1")
+```
+
+# Index
+The content in this case study document include:
+* Part1: Introduction with purpose of the document.
+* Part2: Instructions to set the development environment to execute the R code.
+* Part3: Downloading GDP and Federal Statstical data, cleaning, merging and creating tidy data.
+* Part4: Evaluate answers for the case study questions
+* Part5: Conclusion
+* Part6: References
+
+## Part 1: Introduction
+The following case study is to evaluate the GDP and Income data categories provided by Federal Statistics for Educational purposes. The intent is to study various data points available for all the countries in two separate files, clean and merge them to perform some specific analysis as required.
+
+## Part 2: Set the environment ready to execute the coding steps
+
+Download and install the libraries, if not already available in the session
+(commented the following statements since the packages are already installed in my session)
+```{r}
+# install.packages("repmis")    # Misc tools for Reproduciable Research
+# install.packages("plyr")      # Tools for Splitting, Applying and Combining Data
+# install.packages("ggplot2")   # Used for Advanced Graphics
+```
+
+Load the packages to ensure that packages/functions are available when referenced
+```{r}
+library(repmis)
+library(plyr)
+library(ggplot2)
+```
+
+## Part 3: Download the source data, clean, merge and create tidy data for analysis
+
+```{r}
+# download the files and read into tables 
+source("./Analysis/data/countryGDPrawdata.R", echo=TRUE, keep.source=TRUE)
+source("./Analysis/data/countryFedStatsrawdata.R", echo=TRUE, keep.source=TRUE)
+
+#### clean the source files, and create tidy data
+source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source=TRUE)
+source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source=TRUE)
+
+#### merge the dataset, remove unmatched records, and create final tidy data for analysis
+source("./Analysis/data/countryGDPIncometidydata.R", echo=TRUE, keep.source=TRUE)
+```
+
+#  Part 4: Peform Analysis per the cleaned and tidy data
+
+```{r}
+# set to parent directory ../Analysis
+# setwd("../")
+# Analyse the tidy data to provide answers to Case Study questions.
+source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
+```
+
+## Part 5: Conclusion
+* GDP data of world countries shows large economic gap between developed (High income: OECD) and other countries.
+* Top 25% countries account for 98.5% of world GDP, while bottom 25% < 0.005 - shows economic disparity
+* Observing "Lower middle income" countries, it's apparent that countries with highest population (such as China, India, Indonasia) has generated considerable GDP to be in top 20 of the list, but categorized as income group show the lower per capita for the population.
+* The data is very limited to country GDP data. A more meaningul analysis could be done if country population, size, poverty and any other relavant data made available.
+
+## Part 6: References
+[SMU MSDS Case Study 1 instructions]( https://s3-us-west-2.amazonaws.com/smu-mds/prod/MSDS+6306+Doing+Data+Science/2016+Updates/Case-Study+1.pdf)
+[Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)

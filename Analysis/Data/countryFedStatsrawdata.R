@@ -1,13 +1,13 @@
 ########################################################################################
-# Load the educational data from this data set
+# Purpose: Load the Federal Educational Statistical data from this data set
+# Author: Ramesh Simhambhatla
+# Date Created: 10/28/2016
 ########################################################################################
 
-#setwd(file.path(getwd(),"/Analysis/Data"))
-
-cat("Start reading Federal Educational Stats file from internet")
-
+# set url of the Federal Educational Stats data to a local variable
 countryFedStatsUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
-## download the file from the URL set 
+
+# download the file from the URL set 
 download.file(countryFedStatsUrl, destfile = "./countryFedStats.csv")
 
 # read csv into a data frame
@@ -23,7 +23,8 @@ dim(countryFedStatsraw)
 ## for merge and analysis
 str(countryFedStatsraw) #should show 234 observsation with 31 variables
 
-## explore data with top 10 rows
-head(countryFedStatsraw, 10)
-
-cat("End of reading Federal Educational Stats file from internet and reading to local session table")
+message("Observations while reading the Federal Stats raw data file: 
+a. GDP data file contains Federal Stats on Income and some census survey data with 234 observations.
+b. The file has appropriate headers and kept it while reading
+c. Only Contry Code and Income Group has relavent and useful data for analysis
+d. The file contains various other data, incomplete, which is not be required for final analysis") 

@@ -1,0 +1,140 @@
+---
+title: "World Country GDP and Income Group Evaluation"
+author: "Ramesh Simhambhatla"
+date: "October 29, 2016"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup}
+library(knitr)
+opts_knit$set(root_dir = "/Users/rsimham/Documents/Ramesh/SMU/GitRepos/Case Studies/MSDS-CaseStudy1/Analysis/Data")
+```
+
+# Index and Content in the document
+The content in this case study document include:
+* Part1: Introduction with purpose of the document.
+* Part2: Instructions to set the development environment to execute the R code.
+* Part3: Downloading GDP and Federal Statstical data, cleaning, merging and creating tidy data.
+* Part4: Evaluate answers for the case study questions
+* Part5: Conclusion
+* Part6: References
+
+# Part 1: Introduction
+The following case study is to evaluate the GDP and Income data categories provided by Federal Statistics for Educational purposes. The intent is to study various data points available for all the countries in two separate files, clean and merge them to perform some specific analysis as required.
+
+
+
+# Part 2: Set the environment ready to execute the coding steps
+```{r}
+# set working directory to the directory of primary data manipulation folder/makefile is
+#setwd("/Users/rsimham/Documents/Ramesh/SMU/GitRepos/Case Studies/MSDS-CaseStudy1/Analysis/Data")
+```
+
+Download and install the libraries, if not already available in the session
+(commented the following statements since the packages are already installed in my session)
+# install.packages("repmis")    # Misc tools for Reproduciable Research
+# install.packages("plyr")      # Tools for Splitting, Applying and Combining Data
+# install.packages("ggplot2")   # Used for Advanced Graphics
+
+Load the packages to ensure that packages/functions are available when referenced
+```{r}
+library(repmis)
+library(plyr)
+library(ggplot2)
+```
+
+# Part 3: Download the source data, clean, merge and create tidy data for analysis
+
+## download the files and read into tables 
+source("countryGDPrawdata.R", echo=TRUE, keep.source=TRUE)
+source("countryFedStatsrawdata.R", echo=TRUE, keep.source=TRUE)
+
+## clean the source files, and create tidy data
+source("countryGDPcleandata.R", echo=TRUE, keep.source=TRUE)
+source("countryFedStatscleandata.R", echo=TRUE, keep.source=TRUE)
+
+## merge the dataset, remove unmatched records, and create final tidy data for analysis
+source("countryGDPIncometidydata.R", echo=TRUE, keep.source=TRUE)
+
+# set to parent directory ../Analysis
+# setwd("../")
+## Analyse the tidy data to provide answers to Case Study questions.
+# source("analysisQuestion1GDPMatches.R", echo=TRUE, keep.source = TRUE)
+```
+#  Part 4: Peform Analysis per the cleaned and tidy data
+
+#### QUESTION 1: Merge the data based on the country shortcode. How many of the IDs match? 
+```{r}
+nrow(cleanGDPIncomeGroup)
+```
+Answer: 190. This is from the total number of observations from the tidy data. The final tidy data table has 190 matched observations with countries with GDP.
+
+#### QUESTION 2: Sort the data frame in ascending order by GDP (so United States is last). 
+# What is the 13th country in the resulting data frame?
+
+Sort the data in ascending order of rank - no explicity "asc" required for arrange function
+```{r}
+# arrange function helps sort the data, default 'ascending' by gdpinusd
+cleanGDPIncomeGroup <- arrange(cleanGDPIncomeGroup, gdpinusd)
+str(cleanGDPIncomeGroup)      # review the structure to determine the desired output 
+```
+Find the countryname for the 13th country in the data frame - KNA - St. Kitts and Nevis
+```{r}
+cleanGDPIncomeGroup$countryname[which(cleanGDPIncomeGroup$rank == 13)]
+```
+Answer: KNA - St. Kitts and Nevis is the 13th country from bottom of the list
+
+#### QUESTOIN 3: What are the average GDP rankings for the "High income: OECD" and 
+# "High income: nonOECD" groups? 
+
+Evaluate the average GDP rankings for the "High income: OECD" income group 
+```{r}
+OECDdata <- cleanGDPIncomeGroup[which(cleanGDPIncomeGroup$income.group == "High income: OECD"),]
+head(OECDdata)      # review top 6 observations
+mean(OECDdata$rank) # determine mean from the derived subset
+```
+Answer: 32.9667 (million USD) (from sum=989 of 30 observations) 
+
+# Evaluate the average GDP rankings for the "High income: OECD" income group 
+```{r}
+nonOECDdata <- cleanGDPIncomeGroup[which(cleanGDPIncomeGroup$income.group == "High income: nonOECD"),]
+mean(nonOECDdata$rank) # determine mean from the derived subset
+```
+Answer: 91.91304 (from sum=2114 of 23 observations)
+
+#### QUESTION 4:Plot the GDP for all of the countries. Use ggplot2 to color your plot by Income Group.
+
+```{r}
+qplot(data=cleanGDPIncomeGroup, countrycode, log10(gdpinusd), color=income.group, 
+      main="Plot GDP for All Countries", xlab="Country Code", ylab="GDP in USD - log10") +
+  theme(axis.text.x = element_text(angle = 90, size=6))
+```
+
+#### QUESTION 5 (a): Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. 
+
+Find the quantiles and analyse
+```{r}
+quantileGDP <- quantile(cleanGDPIncomeGroup$gdpinusd)
+quantileGDP
+```
+Analysis: It's very interesting to find the diveregence GDP differences between the countries
+top 25% percentile of the countries account for >98.5% of world GDP; bottom 25% account for < 0.05%
+
+#QUESTION 5 (b): How many countries are Lower middle income but among the 38 nations with highest GDP?
+
+```{r}
+countrylmiLT39 <- cleanGDPIncomeGroup[which(cleanGDPIncomeGroup$income.group == "Lower middle income" & cleanGDPIncomeGroup$rank <=38 ),]
+
+# list all countries that meet the criteria - lower middle income category & in top 38 GDP rank
+countrylmiLT39
+
+# Number of observations in the criteria: 5
+nrow(countrylmiLT39)
+```
+Answer: 5. It's apparent that countries with highest population (such as China, India, Indonasia) has generated considerable GDP to be in top 20 of the list, but categorized as income group show the lower per capita for the population.
+
+# Part 5: Conclusion
+
+# Part 6: References

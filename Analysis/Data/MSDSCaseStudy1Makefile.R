@@ -1,5 +1,8 @@
-
-parentwd <- "/Users/rsimham/Documents/Ramesh/SMU/GitRepos/Case Studies/MSDS-CaseStudy1/Analysis"
+########################################################################################
+# Purpose: Read the GDP data for all countries file
+# Author: Ramesh Simhambhatla
+# Date Created: 10/28/2016
+########################################################################################
 
 setwd("/Users/rsimham/Documents/Ramesh/SMU/GitRepos/Case Studies/MSDS-CaseStudy1/Analysis/Data")
 
@@ -24,6 +27,8 @@ source("countryFedStatscleandata.R")
 ## merge the dataset, remove unmatched records, and create final tidy data for analysis
 source("countryGDPIncometidydata.R")
 
-setwd(parentwd)
+# set to parent directory ../Analysis
+setwd("../")
+
 ## Analyse the tidy data to provide answers to Case Study questions.
-source("caseStudyAnalysis.R")
+source("caseStudyAnalysis.R", echo=TRUE)

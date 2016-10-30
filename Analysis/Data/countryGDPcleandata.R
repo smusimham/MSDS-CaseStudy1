@@ -1,5 +1,7 @@
 ########################################################################################
-# create a clean/tidy GDP table for later analysis
+# Purpose: create a clean/tidy GDP table for later analysis
+# Author: Ramesh Simhambhatla
+# Date Created: 10/28/2016
 ########################################################################################
 
 # cleanup the original table to make it appropriate for merge and analysis
@@ -12,7 +14,6 @@ head(countryGDPfinal)
 
 # now remove columns/variables 3 and 6 to 10 - they are not required to consturct the GDP table
 countryGDPfinal <- countryGDPfinal[,-c(3, 6:10)]
-head(countryGDPfinal)
 
 # let's rename the column or variable names to match relavent data
 names(countryGDPfinal) # current variable names
@@ -28,7 +29,16 @@ countryGDPfinal$gdpinusd <- as.numeric(gsub("[^[:digit:]]","",countryGDPfinal$gd
 
 # let's verify the data types of the final variables
 str(countryGDPfinal)
-head(countryGDPfinal)
 
 # now countryCode and CountryName are chars; rank is integer and GDPinUSD is numeric.
 dim(countryGDPfinal) # will show the table 190 countries with 4 variables
+
+# save the table to external csv file for reference
+write.csv(countryGDPfinal, file="countryGDPfinal.csv")
+
+message("Clean up performed on GDP raw data file: 
+a. Removed observations <5 and >195 as they doesn't belong or don't have GDP data.
+b. Removed variables 3 and 6 through 10 as they do not contain relavent useful GDP data.
+c. Added new variobles names (or column headers) to map the observations appropriately.
+d. Converted rank and GDP data to integer and numeric respectively
+e. Total 190 observations are included in the final output") 
