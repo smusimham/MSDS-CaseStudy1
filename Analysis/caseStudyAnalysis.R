@@ -1,12 +1,7 @@
-#################################
-# Purpose: EVALUATE FOR CASE STUDY QUESTIONS:
-# Author: Ramesh Simhambhatla
-# Date Created: 10/28/2016
-#################################
-
 ############
 # QUESTION 1: Merge the data based on the country shortcode. How many of the IDs match? 
 # ANSWER: 189 matches per the str function
+nrow(cleanGDPIncomeGroup)
 message("Number of matches after merging with country shortcode: ", nrow(cleanGDPIncomeGroup))
 
 ############
@@ -37,7 +32,7 @@ ggplot(cleanGDPIncomeGroup, aes(income.group, log10(gdpinusd), fill = income.gro
   geom_boxplot(outlier.shape = NA) +
   theme(axis.text.x = element_text(angle = 45, size=8)) +
   ggtitle("Box Plot for GDP for All Countries by Income Group") +
-  labs(x="Country Code", y="GDP in USD - log10")
+  labs(x="Income Group", y="GDP in USD - log10")
 
 message("Observations from the boxplot of GDP data by income.group:
 a. All countries in the High income: OECD group countries have higher than all other groups. 

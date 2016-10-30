@@ -1,14 +1,7 @@
-# World Country GDP and Income Group Evaluation
+# World Country GDP and Income Groups Evaluation
 Ramesh Simhambhatla  
 October 29, 2016  
-
-```r
-library(knitr)
-opts_knit$set(root_dir = "/Users/rsimham/Documents/Ramesh/SMU/GitRepos/Case Studies/MSDS-CaseStudy1")
-```
-
-# Index
-The content in this case study document include:
+# Index: 
 * Part1: Introduction with purpose of the document.
 * Part2: Instructions to set the development environment to execute the R code.
 * Part3: Downloading GDP and Federal Statstical data, cleaning, merging and creating tidy data.
@@ -21,6 +14,11 @@ The following case study is to evaluate the GDP and Income data categories provi
 
 ## Part 2: Set the environment ready to execute the coding steps
 
+
+```r
+library(knitr)
+opts_knit$set(root_dir = "/Users/rsimham/Documents/Ramesh/SMU/GitRepos/Case Studies/MSDS-CaseStudy1")
+```
 Download and install the libraries, if not already available in the session
 (commented the following statements since the packages are already installed in my session)
 
@@ -43,7 +41,7 @@ library(ggplot2)
 
 ```r
 # download the files and read into tables 
-source("./Analysis/data/countryGDPrawdata.R", echo=TRUE, keep.source=TRUE)
+source("./Analysis/data/countryGDPrawdata.R", echo=TRUE, keep.source = TRUE)
 ```
 
 ```
@@ -93,7 +91,7 @@ source("./Analysis/data/countryGDPrawdata.R", echo=TRUE, keep.source=TRUE)
 ```
 
 ```r
-source("./Analysis/data/countryFedStatsrawdata.R", echo=TRUE, keep.source=TRUE)
+source("./Analysis/data/countryFedStatsrawdata.R", echo=TRUE, keep.source = TRUE)
 ```
 
 ```
@@ -163,7 +161,7 @@ source("./Analysis/data/countryFedStatsrawdata.R", echo=TRUE, keep.source=TRUE)
 
 ```r
 #### clean the source files, and create tidy data
-source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source=TRUE)
+source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source = TRUE)
 ```
 
 ```
@@ -235,7 +233,7 @@ source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source=TRUE)
 ```
 
 ```r
-source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source=TRUE)
+source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source = TRUE)
 ```
 
 ```
@@ -295,7 +293,7 @@ source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source=TRUE
 
 ```r
 #### merge the dataset, remove unmatched records, and create final tidy data for analysis
-source("./Analysis/data/countryGDPIncometidydata.R", echo=TRUE, keep.source=TRUE)
+source("./Analysis/data/countryGDPIncometidydata.R", echo=TRUE, keep.source = TRUE)
 ```
 
 ```
@@ -339,23 +337,22 @@ source("./Analysis/data/countryGDPIncometidydata.R", echo=TRUE, keep.source=TRUE
 ## b. 189 observations have matches; remove unmatched observations
 ```
 
-#  Part 4: Peform Analysis per the cleaned and tidy data
+##  Part 4: Peform Analysis per the cleaned and tidy data
 
 
 ```r
-# set to parent directory ../Analysis
-# setwd("../")
 # Analyse the tidy data to provide answers to Case Study questions.
 source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
 ```
 
 ```
 ## 
-## > #################################
-## > # Purpose: EVALUATE FOR CASE STUDY QUESTIONS:
-## > # Author: Ramesh Simhambhatla
-## > # Date Created: 10/28/2016
-## > ### .... [TRUNCATED]
+## > ############
+## > # QUESTION 1: Merge the data based on the country shortcode. How many of the IDs match? 
+## > # ANSWER: 189 matches per the str function .... [TRUNCATED] 
+## [1] 189
+## 
+## > message("Number of matches after merging with country shortcode: ", nrow(cleanGDPIncomeGroup))
 ```
 
 ```
