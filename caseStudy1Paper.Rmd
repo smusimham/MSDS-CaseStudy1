@@ -12,10 +12,11 @@ output:
 * Part3: Downloading GDP and Federal Statstical data, cleaning, merging and creating tidy data.
 * Part4: Evaluate answers for the case study questions
 * Part5: Conclusion
-* Part6: References
+* Part6: Known Issues
+* Part7: References
 
 ## Part 1: Introduction
-The following case study is to evaluate the GDP and Income data categories provided by Federal Statistics for Educational purposes. The intent is to study various data points available for all the countries in two separate files, clean and merge them to perform some specific analysis as required.
+The following case study is to evaluate the GDP and Income data categories provided by Federal Statistics for Educational purposes. The intent is to study various data points available for all the countries in two separate files, clean and merge them to perform some specific analysis as required. The data is anlaysed for economic disparities between various income groups acorss all the regions in the world. The tidy data is limited to Country, GDP, and Income Groups - and analysis is made based on this limited data.
 
 ## Part 2: Set the environment ready to execute the coding steps
 
@@ -42,22 +43,29 @@ library(ggplot2)
 
 ```{r}
 # download the files and read into tables 
-source("./Analysis/data/countryGDPrawdata.R", echo=TRUE, keep.source = TRUE)
-source("./Analysis/data/countryFedStatsrawdata.R", echo=TRUE, keep.source = TRUE)
+source("./Analysis/data/countryGDPrawdata.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
+source("./Analysis/data/countryFedStatsrawdata.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
 
 #### clean the source files, and create tidy data
-source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source = TRUE)
-source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source = TRUE)
+source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
+source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
 
 #### merge the dataset, remove unmatched records, and create final tidy data for analysis
-source("./Analysis/data/countryGDPIncometidydata.R", echo=TRUE, keep.source = TRUE)
+source("./Analysis/data/countryGDPIncometidydata.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
 ```
+
+### Key Data Elements used:
+* countrycode - a 3-digit country code
+* income.group - 5 categories of income groups defined
+* countryname - normall referenced Country name
+* gdpinusd - Gross Domestic Product of a Country in US Dollars
+* rank - The numeric rank of a Country GDP in US Dollars - highest rank is 1.
 
 ##  Part 4: Peform Analysis per the cleaned and tidy data
 
 ```{r}
 # Analyse the tidy data to provide answers to Case Study questions.
-source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
+source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
 ```
 
 ## Part 5: Conclusion
@@ -65,7 +73,18 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
 * Top 25% countries account for 98.5% of world GDP, while bottom 25% < 0.005 - shows economic disparity
 * Observing "Lower middle income" countries, it's apparent that countries with highest population (such as China, India, Indonasia) has generated considerable GDP to be in top 20 of the list, but categorized as income group show the lower per capita for the population.
 * The data is very limited to country GDP data. A more meaningul analysis could be done if country population, size, poverty and any other relavant data made available.
+* Source data has been cleaned up and merged to create the tidy data set for analysis. The final tidy data set include: Country Code, Country Name, Rank, Country GDP (in USD), and Income Group.
 
-## Part 6: References
-[SMU MSDS Case Study 1 instructions]( https://s3-us-west-2.amazonaws.com/smu-mds/prod/MSDS+6306+Doing+Data+Science/2016+Updates/Case-Study+1.pdf)
-[Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+## Part 6: Known Issues
+* The ggplot output for question 4 is printing after the end of the source file (after answer for question 5). This is assumed due to the latency in generating and printing the plot. Further invetigation required to fix the issue.
+* Some of the output form the source files printing as "TRUNCATED" due to possible printing of characters allowed by a text segment, max.deparse.lenght=500 is set to minimize the issue.
+
+## Part 7: References
+* [SMU MSDS Case Study 1 instructions](https://s3-us-west-2.amazonaws.com/smu-mds/prod/MSDS+6306+Doing+Data+Science/2016+Updates/Case-Study+1.pdf)
+* [Load the Gross Domestic Product data for the 190 ranked countries in this data set]( https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv)
+* [Load the educational data from this data set](https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv)
+* Original data sources, if the links above do not work:
+     + <http://data.worldbank.org/data-catalog/GDP-ranking-table>
+     + <http://data.worldbank.org/data-catalog/ed-stats>
+* [Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+

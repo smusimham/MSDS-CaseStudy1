@@ -7,10 +7,11 @@ October 29, 2016
 * Part3: Downloading GDP and Federal Statstical data, cleaning, merging and creating tidy data.
 * Part4: Evaluate answers for the case study questions
 * Part5: Conclusion
-* Part6: References
+* Part6: Known Issues
+* Part7: References
 
 ## Part 1: Introduction
-The following case study is to evaluate the GDP and Income data categories provided by Federal Statistics for Educational purposes. The intent is to study various data points available for all the countries in two separate files, clean and merge them to perform some specific analysis as required.
+The following case study is to evaluate the GDP and Income data categories provided by Federal Statistics for Educational purposes. The intent is to study various data points available for all the countries in two separate files, clean and merge them to perform some specific analysis as required. The data is anlaysed for economic disparities between various income groups acorss all the regions in the world. The tidy data is limited to Country, GDP, and Income Groups - and analysis is made based on this limited data.
 
 ## Part 2: Set the environment ready to execute the coding steps
 
@@ -41,21 +42,26 @@ library(ggplot2)
 
 ```r
 # download the files and read into tables 
-source("./Analysis/data/countryGDPrawdata.R", echo=TRUE, keep.source = TRUE)
+source("./Analysis/data/countryGDPrawdata.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
 ```
 
 ```
 ## 
 ## > ########################################################################################
 ## > # Purpose: Read the GDP raw data for all countries file
-## > .... [TRUNCATED] 
+## > # Author: Ramesh Simhambhatla
+## > # Date Created: 10/28/2016
+## > ########################################################################################
+## > 
+## > countryGDPUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
 ## 
 ## > # download the file from the URL set 
 ## > download.file(countryGDPUrl, destfile = "./countryGDPdata.csv")
 ## 
 ## > # read csv into a data frame
 ## > # preserve character data type where approrpiate - use stringsAsFactors
-## > # current headers not appropriate, make it  .... [TRUNCATED] 
+## > # current headers not appropriate, make it false
+## > countryGDPraw <- read.csv("countryGDPdata.csv", stringsAsFactors = FALSE, header = FALSE)
 ## 
 ## > # get dimension, variable names, and structure of the data
 ## > # dimension of the dataframe shows observations and variables
@@ -79,7 +85,9 @@ source("./Analysis/data/countryGDPrawdata.R", echo=TRUE, keep.source = TRUE)
 ## 
 ## > message("Observations while reading the GDP raw data file: 
 ## + a. GDP data file contains GDP data for 190 countries with ranking. 
-## + b. The file do n ..." ... [TRUNCATED]
+## + b. The file do not have appropriate headers, so removed while reading into the data frame
+## + c. String data read as factors, so prevented while reading the file
+## + d. The file contains various other data, which may not be required for final analysis")
 ```
 
 ```
@@ -91,29 +99,36 @@ source("./Analysis/data/countryGDPrawdata.R", echo=TRUE, keep.source = TRUE)
 ```
 
 ```r
-source("./Analysis/data/countryFedStatsrawdata.R", echo=TRUE, keep.source = TRUE)
+source("./Analysis/data/countryFedStatsrawdata.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
 ```
 
 ```
 ## 
 ## > ########################################################################################
-## > # Purpose: Load the Federal Educational Statistical data  .... [TRUNCATED] 
+## > # Purpose: Load the Federal Educational Statistical data from this data set
+## > # Author: Ramesh Simhambhatla
+## > # Date Created: 10/28/2016
+## > ########################################################################################
+## > 
+## > # set url of the Federal Educational Stats data to a local variable
+## > countryFedStatsUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
 ## 
 ## > # download the file from the URL set 
 ## > download.file(countryFedStatsUrl, destfile = "./countryFedStats.csv")
 ## 
 ## > # read csv into a data frame
 ## > # preserve character data type where approrpiate - use stringsAsFactors
-## > # current headers looks ok, keep them for n .... [TRUNCATED] 
+## > # current headers looks ok, keep them for now
+## > countryFedStatsraw <- read.csv("countryFedStats.csv", stringsAsFactors = FALSE, header = TRUE)
 ## 
 ## > ## get dimension, variable names, and structure of the data
 ## > ## dimension of the dataframe shows observations and variables
-## > dim(countryFedStatsra .... [TRUNCATED] 
+## > dim(countryFedStatsraw)
 ## [1] 234  31
 ## 
 ## > ## examine general schema/structure of the table to determine useful variables and observations 
 ## > ## for merge and analysis
-## > str(countryFedStatsra .... [TRUNCATED] 
+## > str(countryFedStatsraw) #should show 234 observsation with 31 variables
 ## 'data.frame':	234 obs. of  31 variables:
 ##  $ CountryCode                                      : chr  "ABW" "ADO" "AFG" "AGO" ...
 ##  $ Long.Name                                        : chr  "Aruba" "Principality of Andorra" "Islamic State of Afghanistan" "People's Republic of Angola" ...
@@ -148,7 +163,10 @@ source("./Analysis/data/countryFedStatsrawdata.R", echo=TRUE, keep.source = TRUE
 ##  $ Short.Name                                       : chr  "Aruba" "Andorra" "Afghanistan" "Angola" ...
 ## 
 ## > message("Observations while reading the Federal Stats raw data file: 
-## + a. GDP data file contains Federal Stats on Income and some census survey dat ..." ... [TRUNCATED]
+## + a. GDP data file contains Federal Stats on Income and some census survey data with 234 observations.
+## + b. The file has appropriate headers and kept it while reading
+## + c. Only Contry Code and Income Group has relavent and useful data for analysis
+## + d. The file contains various other data, incomplete, which is not be required for final analysis")
 ```
 
 ```
@@ -161,13 +179,21 @@ source("./Analysis/data/countryFedStatsrawdata.R", echo=TRUE, keep.source = TRUE
 
 ```r
 #### clean the source files, and create tidy data
-source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source = TRUE)
+source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
 ```
 
 ```
 ## 
 ## > ########################################################################################
-## > # Purpose: create a clean/tidy GDP table for later analys .... [TRUNCATED] 
+## > # Purpose: create a clean/tidy GDP table for later analysis
+## > # Author: Ramesh Simhambhatla
+## > # Date Created: 10/28/2016
+## > ########################################################################################
+## > 
+## > # cleanup the original table to make it appropriate for merge and analysis
+## > # keep the original table, and follow next steps to create final country GDP table
+## > 
+## > # further exploring data, .... [TRUNCATED] 
 ## 
 ## > head(countryGDPfinal)
 ##     V1 V2 V3             V4           V5 V6 V7 V8 V9 V10
@@ -212,7 +238,7 @@ source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source = TRUE)
 ##  $ gdpinusd   : num  16244600 8227103 5959718 3428131 2612878 ...
 ## 
 ## > # now countryCode and CountryName are chars; rank is integer and GDPinUSD is numeric.
-## > dim(countryGDPfinal) # will show the table 190 countries wit .... [TRUNCATED] 
+## > dim(countryGDPfinal) # will show the table 190 countries with 4 variables
 ## [1] 190   4
 ## 
 ## > # save the table to external csv file for reference
@@ -220,7 +246,10 @@ source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source = TRUE)
 ## 
 ## > message("Clean up performed on GDP raw data file: 
 ## + a. Removed observations <5 and >195 as they doesn't belong or don't have GDP data.
-## + b. Removed ..." ... [TRUNCATED]
+## + b. Removed variables 3 and 6 through 10 as they do not contain relavent useful GDP data.
+## + c. Added new variobles names (or column headers) to map the observations appropriately.
+## + d. Converted rank and GDP data to integer and numeric respectively
+## + e. Total 190 observations are included in the final output")
 ```
 
 ```
@@ -233,7 +262,7 @@ source("./Analysis/data/countryGDPcleandata.R", echo=TRUE, keep.source = TRUE)
 ```
 
 ```r
-source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source = TRUE)
+source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
 ```
 
 ```
@@ -241,7 +270,11 @@ source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source = TR
 ## > ###########################
 ## > # Purpose: create a tidy federal stats table for merge with GDP data & later analysis
 ## > # Author: Ramesh Simhambhatla
-##  .... [TRUNCATED] 
+## > # Date Created: 10/28/2016
+## > ###########################
+## > 
+## > # copy the original to the to-be-cleaned-up table
+## > countryFedStats <- countryFedStatsraw
 ## 
 ## > #first convert all names to lowercase for easier reference and consistency
 ## > names(countryFedStats) <- tolower(names(countryFedStats)) 
@@ -270,7 +303,9 @@ source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source = TR
 ## > # view first two variables to confirm they are not countries
 ## > # str(countryFedStats)[,1:2]
 ## > 
-## > # since the case study is focussed on GDP and Incom .... [TRUNCATED] 
+## > # since the case study is focussed on GDP and Income Group, create a Final dataset for merging
+## > # with GDP table - by country code
+## > countryFedStatsFinal <- countryFedStats[,c(1,3)]
 ## 
 ## > str(countryFedStatsFinal)
 ## 'data.frame':	210 obs. of  2 variables:
@@ -281,7 +316,8 @@ source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source = TR
 ## 
 ## > message("Clean up performed on Federal Stats raw data file: 
 ## + a. Converted all names to lowercase for easier reference and consistency.
-## + b. Countr ..." ... [TRUNCATED]
+## + b. Country and non-counry data was mixed; Removed observations which do not have Income Group
+## + c. Final clean up data contains 210 observations with country code & income.group; rest of the variables discarded")
 ```
 
 ```
@@ -293,13 +329,19 @@ source("./Analysis/data/countryFedStatscleandata.R", echo=TRUE, keep.source = TR
 
 ```r
 #### merge the dataset, remove unmatched records, and create final tidy data for analysis
-source("./Analysis/data/countryGDPIncometidydata.R", echo=TRUE, keep.source = TRUE)
+source("./Analysis/data/countryGDPIncometidydata.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
 ```
 
 ```
 ## 
 ## > ########################################################################################
-## > # Purpose: merge cleaned GDP and Income Group data by cou .... [TRUNCATED] 
+## > # Purpose: merge cleaned GDP and Income Group data by countrycode
+## > # Author: Ramesh Simhambhatla
+## > # Date Created: 10/28/2016
+## > ########################################################################################
+## > 
+## > # note the GDP data has 190 observations, and Income Group has 210 observations
+## > mergeGDPIncomeGroup <- merge(countryGDPfinal, countryFedStatsFinal, by="countrycode", all=FALSE)
 ## 
 ## > # view top 6 observations to get an idea on ther merge
 ## > head(mergeGDPIncomeGroup)
@@ -328,7 +370,7 @@ source("./Analysis/data/countryGDPIncometidydata.R", echo=TRUE, keep.source = TR
 ## 
 ## > message("Following actions performed to create tidy data: 
 ## + a. merged the cleaned GDP and Federal Stats data by countrycode
-## + b. 189 observations h ..." ... [TRUNCATED]
+## + b. 189 observations have matches; remove unmatched observations")
 ```
 
 ```
@@ -337,19 +379,45 @@ source("./Analysis/data/countryGDPIncometidydata.R", echo=TRUE, keep.source = TR
 ## b. 189 observations have matches; remove unmatched observations
 ```
 
+```
+## 
+## > # Observation on GDP distribtuion 
+## > hist(log10(cleanGDPIncomeGroup$gdpinusd), main="Histogram on GDP by Country", xlab="GDP Distribution", ylab="GDP in USD")
+```
+
+```
+## 
+## > message("An interesting observation by Histogram on GDP shows a log normal distribution of GDP by all world countries")
+```
+
+```
+## An interesting observation by Histogram on GDP shows a log normal distribution of GDP by all world countries
+```
+
+![](caseStudy1Paper_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
+### Key Data Elements used:
+* countrycode - a 3-digit country code
+* income.group - 5 categories of income groups defined
+* countryname - normall referenced Country name
+* gdpinusd - Gross Domestic Product of a Country in US Dollars
+* rank - The numeric rank of a Country GDP in US Dollars - highest rank is 1.
+
 ##  Part 4: Peform Analysis per the cleaned and tidy data
 
 
 ```r
 # Analyse the tidy data to provide answers to Case Study questions.
-source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
+source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE, max.deparse.length=500)
 ```
 
 ```
 ## 
 ## > ############
 ## > # QUESTION 1: Merge the data based on the country shortcode. How many of the IDs match? 
-## > # ANSWER: 189 matches per the str function .... [TRUNCATED] 
+## > # ANSWER: 189 matches per the str function
+## > 
+## > nrow(cleanGDPIncomeGroup)
 ## [1] 189
 ## 
 ## > message("Number of matches after merging with country shortcode: ", nrow(cleanGDPIncomeGroup))
@@ -363,7 +431,10 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
 ## 
 ## > ############
 ## > # QUESTION 2: Sort the data frame in ascending order by GDP (so United States is last). 
-## > # What is the 13th country in the resultin .... [TRUNCATED] 
+## > # What is the 13th country in the resulting data frame?
+## > 
+## > # sort the data in ascending order of rank - no explicity "asc" required for arrange function
+## > cleanGDPIncomeGroup <- arrange(cleanGDPIncomeGroup, gdpinusd)
 ## 
 ## > str(cleanGDPIncomeGroup)
 ## 'data.frame':	189 obs. of  5 variables:
@@ -374,7 +445,7 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
 ##  $ income.group: chr  "Lower middle income" "Lower middle income" "Lower middle income" "Upper middle income" ...
 ## 
 ## > # find the countryname for the 13th country in the data frame - KNA - St. Kitts and Nevis
-## > message("The 13th country in the resulting data frame: " .... [TRUNCATED]
+## > message("The 13th country in the resulting data frame: ", cleanGDPIncomeGroup[13,"countryname"])
 ```
 
 ```
@@ -386,7 +457,7 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
 ## > ############
 ## > # QUESTOIN 3: What are the average GDP rankings for the "High income: OECD" and 
 ## > # "High income: nonOECD" groups? 
-## > OECDdata <- cl .... [TRUNCATED] 
+## > OECDdata <- cleanGDPIncomeGroup[which(cleanGDPIncomeGroup$income.group == "High income: OECD"),]
 ## 
 ## > message("The average GDP rankings for the (High income: OECD): ", mean(OECDdata$rank))
 ```
@@ -412,13 +483,24 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
 ## > #QUESTION 4:Plot the GDP for all of the countries. Use ggplot2 to color your plot by 
 ## > # Income Group.
 ## > 
-## > ggplot(cleanGDPIncomeGrou .... [TRUNCATED]
+## > plotData <- ggplot(cleanGDPIncomeGroup, aes(income.group, log10(gdpinusd), fill = income.group)) + 
+## +   geom_boxplot(outlier.shape = NA) +
+## +   theme(axis.text.x = element_text(angle = 45, size=8)) +
+## +   ggtitle("Box Plot for GDP for All Countries by Income Group") +
+## +   labs(x="Income Group", y="GDP in USD - log10")
+## 
+## > print(plotData)
 ```
 
 ```
 ## 
 ## > message("Observations from the boxplot of GDP data by income.group:
-## + a. All countries in the High income: OECD group countries have higher than all ..." ... [TRUNCATED]
+## + a. All countries in the High income: OECD group countries have higher than all other groups. 
+## +    These are generally regarded as developed countries.
+## + b. Median GDP of the High Income: nonOECD, Lower Middle Income and Uppler Middle income groups are
+## +    very close, shows possible wide income gap in this group.
+## + c. Number of countries in the Lower middle income group are high, could be related to 
+## +    high population, s ..." ... [TRUNCATED]
 ```
 
 ```
@@ -437,14 +519,15 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
 ## > # QUESTION 5 (a):
 ## > #Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. 
 ## > 
-## > # Find quantiles and .... [TRUNCATED] 
+## > # Find quantiles and analyse
+## > quantileGDP <- quantile(cleanGDPIncomeGroup$gdpinusd)
 ## 
 ## > quantileGDP
 ##       0%      25%      50%      75%     100% 
 ##       40     6972    28242   205789 16244600 
 ## 
 ## > message("With GDP quantiles, it's very interesting to find the diveregence GDP differences between the countries
-## + top 25% percentile of the countri ..." ... [TRUNCATED]
+## + top 25% percentile of the countries account for >98.5% of world GDP; bottom 25% account for < 0.05% of GDP")
 ```
 
 ```
@@ -456,10 +539,11 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
 ## 
 ## > #QUESTION 5 (b):
 ## > # How many countries are Lower middle income but among the 38 nations with highest GDP?
-## > countrylmiLT39 <- cleanGDPIncomeGroup[w .... [TRUNCATED] 
+## > countrylmiLT39 <- cleanGDPIncomeGroup[which(cleanGDPIncomeGroup$income.group == "Lower middle income" & 
+## +                                               cleanGDPIncomeGroup$rank <=38 ),]
 ## 
 ## > # Number of observations in the criteria: 5
-## > message("Number of obversations with Lower middle income in top 38 GDP countries: ", nrow(countrylmiLT .... [TRUNCATED]
+## > message("Number of obversations with Lower middle income in top 38 GDP countries: ", nrow(countrylmiLT39))
 ```
 
 ```
@@ -478,7 +562,18 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE)
 * Top 25% countries account for 98.5% of world GDP, while bottom 25% < 0.005 - shows economic disparity
 * Observing "Lower middle income" countries, it's apparent that countries with highest population (such as China, India, Indonasia) has generated considerable GDP to be in top 20 of the list, but categorized as income group show the lower per capita for the population.
 * The data is very limited to country GDP data. A more meaningul analysis could be done if country population, size, poverty and any other relavant data made available.
+* Source data has been cleaned up and merged to create the tidy data set for analysis. The final tidy data set include: Country Code, Country Name, Rank, Country GDP (in USD), and Income Group.
 
-## Part 6: References
-[SMU MSDS Case Study 1 instructions]( https://s3-us-west-2.amazonaws.com/smu-mds/prod/MSDS+6306+Doing+Data+Science/2016+Updates/Case-Study+1.pdf)
-[Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+## Part 6: Known Issues
+* The ggplot output for question 4 is printing after the end of the source file (after answer for question 5). This is assumed due to the latency in generating and printing the plot. Further invetigation required to fix the issue.
+* Some of the output form the source files printing as "TRUNCATED" due to possible printing of characters allowed by a text segment, max.deparse.lenght=500 is set to minimize the issue.
+
+## Part 7: References
+* [SMU MSDS Case Study 1 instructions](https://s3-us-west-2.amazonaws.com/smu-mds/prod/MSDS+6306+Doing+Data+Science/2016+Updates/Case-Study+1.pdf)
+* [Load the Gross Domestic Product data for the 190 ranked countries in this data set]( https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv)
+* [Load the educational data from this data set](https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv)
+* Original data sources, if the links above do not work:
+     + <http://data.worldbank.org/data-catalog/GDP-ranking-table>
+     + <http://data.worldbank.org/data-catalog/ed-stats>
+* [Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+

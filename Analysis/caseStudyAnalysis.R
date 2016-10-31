@@ -1,6 +1,7 @@
 ############
 # QUESTION 1: Merge the data based on the country shortcode. How many of the IDs match? 
 # ANSWER: 189 matches per the str function
+
 nrow(cleanGDPIncomeGroup)
 message("Number of matches after merging with country shortcode: ", nrow(cleanGDPIncomeGroup))
 
@@ -28,11 +29,13 @@ message("The average GDP rankings for the (High income: nonOECD): ", mean(nonOEC
 #QUESTION 4:Plot the GDP for all of the countries. Use ggplot2 to color your plot by 
 # Income Group.
 
-ggplot(cleanGDPIncomeGroup, aes(income.group, log10(gdpinusd), fill = income.group)) + 
+plotData <- ggplot(cleanGDPIncomeGroup, aes(income.group, log10(gdpinusd), fill = income.group)) + 
   geom_boxplot(outlier.shape = NA) +
   theme(axis.text.x = element_text(angle = 45, size=8)) +
   ggtitle("Box Plot for GDP for All Countries by Income Group") +
   labs(x="Income Group", y="GDP in USD - log10")
+
+print(plotData)
 
 message("Observations from the boxplot of GDP data by income.group:
 a. All countries in the High income: OECD group countries have higher than all other groups. 
