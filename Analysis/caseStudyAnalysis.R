@@ -1,6 +1,6 @@
 ############
 # QUESTION 1: Merge the data based on the country shortcode. How many of the IDs match? 
-# ANSWER: 189 matches per the str function
+# Discarded 21 observations after merging with incomplete data
 
 nrow(cleanGDPIncomeGroup)
 message("Number of matches after merging with country shortcode: ", nrow(cleanGDPIncomeGroup))

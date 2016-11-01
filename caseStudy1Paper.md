@@ -415,7 +415,6 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE, max.depa
 ## 
 ## > ############
 ## > # QUESTION 1: Merge the data based on the country shortcode. How many of the IDs match? 
-## > # ANSWER: 189 matches per the str function
 ## > 
 ## > nrow(cleanGDPIncomeGroup)
 ## [1] 189
@@ -565,7 +564,7 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE, max.depa
 * Source data has been cleaned up and merged to create the tidy data set for analysis. The final tidy data set include: Country Code, Country Name, Rank, Country GDP (in USD), and Income Group.
 
 ## Part 6: Known Issues
-* The ggplot output for question 4 is printing after the end of the source file (after answer for question 5). This is assumed due to the latency in generating and printing the plot. Further invetigation required to fix the issue.
+* The ggplot boxplot and histogram output is printing after the end of the source file. This is assumed due to the latency in generating and printing the plot. Further invetigation required to fix the issue.
 * Some of the output form the source files printing as "TRUNCATED" due to possible printing of characters allowed by a text segment, max.deparse.lenght=500 is set to minimize the issue.
 
 ## Part 7: References
