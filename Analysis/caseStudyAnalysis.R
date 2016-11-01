@@ -54,8 +54,8 @@ quantileGDP <- quantile(cleanGDPIncomeGroup$gdpinusd)
 quantileGDP
 
 # Find quantiles and analyse for ranks
-quantileGDP <- quantile(cleanGDPIncomeGroup$rank)
-quantileGDP
+quantileRank <- quantile(cleanGDPIncomeGroup$rank)
+quantileRank
 
 message("With GDP rank quantiles, it's very interesting to find the diveregence GDP differences between the countries
 top 25% percentile of the countries account for >98.5% of world GDP; bottom 25% account for < 0.05% of GDP")

@@ -527,9 +527,9 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE, max.depa
 ##       40     6972    28242   205789 16244600 
 ## 
 ## > # Find quantiles and analyse for ranks
-## > quantileGDP <- quantile(cleanGDPIncomeGroup$rank)
+## > quantileRank <- quantile(cleanGDPIncomeGroup$rank)
 ## 
-## > quantileGDP
+## > quantileRank
 ##   0%  25%  50%  75% 100% 
 ##    1   48   95  143  190 
 ## 
