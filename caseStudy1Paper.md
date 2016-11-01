@@ -415,6 +415,7 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE, max.depa
 ## 
 ## > ############
 ## > # QUESTION 1: Merge the data based on the country shortcode. How many of the IDs match? 
+## > # Discarded 21 observations after merging with incomplete data
 ## > 
 ## > nrow(cleanGDPIncomeGroup)
 ## [1] 189
@@ -518,19 +519,26 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE, max.depa
 ## > # QUESTION 5 (a):
 ## > #Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. 
 ## > 
-## > # Find quantiles and analyse
+## > # Find quantiles and analyse for GDP
 ## > quantileGDP <- quantile(cleanGDPIncomeGroup$gdpinusd)
 ## 
 ## > quantileGDP
 ##       0%      25%      50%      75%     100% 
 ##       40     6972    28242   205789 16244600 
 ## 
-## > message("With GDP quantiles, it's very interesting to find the diveregence GDP differences between the countries
+## > # Find quantiles and analyse for ranks
+## > quantileGDP <- quantile(cleanGDPIncomeGroup$rank)
+## 
+## > quantileGDP
+##   0%  25%  50%  75% 100% 
+##    1   48   95  143  190 
+## 
+## > message("With GDP rank quantiles, it's very interesting to find the diveregence GDP differences between the countries
 ## + top 25% percentile of the countries account for >98.5% of world GDP; bottom 25% account for < 0.05% of GDP")
 ```
 
 ```
-## With GDP quantiles, it's very interesting to find the diveregence GDP differences between the countries
+## With GDP rank quantiles, it's very interesting to find the diveregence GDP differences between the countries
 ## top 25% percentile of the countries account for >98.5% of world GDP; bottom 25% account for < 0.05% of GDP
 ```
 
@@ -566,9 +574,10 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE, max.depa
 ## Part 6: Known Issues
 * The ggplot boxplot and histogram output is printing after the end of the source file. This is assumed due to the latency in generating and printing the plot. Further invetigation required to fix the issue.
 * Some of the output form the source files printing as "TRUNCATED" due to possible printing of characters allowed by a text segment, max.deparse.lenght=500 is set to minimize the issue.
+* For Question 5, not successful in creating table of quantile(rank) vs income.groups as of this report. This will require further assistence from subject matter experts to find correct solution.
 
 ## Part 7: References
-* [SMU MSDS Case Study 1 instructions](https://s3-us-west-2.amazonaws.com/smu-mds/prod/MSDS+6306+Doing+Data+Science/2016+Updates/Case-Study+1.pdf)
+* [SMU MSDS Case Study 1 instructions (appropriate permissions will be required)](https://s3-us-west-2.amazonaws.com/smu-mds/prod/MSDS+6306+Doing+Data+Science/2016+Updates/Case-Study+1.pdf)
 * [Load the Gross Domestic Product data for the 190 ranked countries in this data set]( https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv)
 * [Load the educational data from this data set](https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv)
 * Original data sources, if the links above do not work:

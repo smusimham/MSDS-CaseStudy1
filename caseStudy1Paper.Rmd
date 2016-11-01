@@ -78,9 +78,10 @@ source("./Analysis/caseStudyAnalysis.R", echo=TRUE, keep.source = TRUE, max.depa
 ## Part 6: Known Issues
 * The ggplot boxplot and histogram output is printing after the end of the source file. This is assumed due to the latency in generating and printing the plot. Further invetigation required to fix the issue.
 * Some of the output form the source files printing as "TRUNCATED" due to possible printing of characters allowed by a text segment, max.deparse.lenght=500 is set to minimize the issue.
+* For Question 5, not successful in creating table of quantile(rank) vs income.groups as of this report. This will require further assistence from subject matter experts to find correct solution.
 
 ## Part 7: References
-* [SMU MSDS Case Study 1 instructions](https://s3-us-west-2.amazonaws.com/smu-mds/prod/MSDS+6306+Doing+Data+Science/2016+Updates/Case-Study+1.pdf)
+* [SMU MSDS Case Study 1 instructions (appropriate permissions will be required)](https://s3-us-west-2.amazonaws.com/smu-mds/prod/MSDS+6306+Doing+Data+Science/2016+Updates/Case-Study+1.pdf)
 * [Load the Gross Domestic Product data for the 190 ranked countries in this data set]( https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv)
 * [Load the educational data from this data set](https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv)
 * Original data sources, if the links above do not work:

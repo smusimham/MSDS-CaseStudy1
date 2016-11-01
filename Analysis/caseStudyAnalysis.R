@@ -49,11 +49,15 @@ c. Number of countries in the Lower middle income group are high, could be relat
 # QUESTION 5 (a):
 #Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. 
 
-# Find quantiles and analyse
+# Find quantiles and analyse for GDP
 quantileGDP <- quantile(cleanGDPIncomeGroup$gdpinusd)
 quantileGDP
 
-message("With GDP quantiles, it's very interesting to find the diveregence GDP differences between the countries
+# Find quantiles and analyse for ranks
+quantileGDP <- quantile(cleanGDPIncomeGroup$rank)
+quantileGDP
+
+message("With GDP rank quantiles, it's very interesting to find the diveregence GDP differences between the countries
 top 25% percentile of the countries account for >98.5% of world GDP; bottom 25% account for < 0.05% of GDP")
 
 #QUESTION 5 (b):
